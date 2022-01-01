@@ -1,13 +1,12 @@
 extern crate jay;
 
-use jay::class_parse::parse;
 use std::fs::File;
-use std::io::Read;
+use jay::class_parse::parse;
 
 #[test]
 fn can_parse_empty_class() {
-    let mut file = File::open("example.data")?;
-    let mut data = Vec::new();
-    file.read_to_end(&mut data);
+    let file = File::open("tests/resources/Empty.class").unwrap();
+
+    let parse_result = parse(file).unwrap();
 
 }

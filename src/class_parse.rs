@@ -19,17 +19,17 @@ impl From<io::Error> for ParserError {
     }
 }
 
-pub fn parse<R: io::Read>(mut bytes: R) -> std::result::Result<ClassFile, ParserError> {
-    let magic= bytes.read_u32::<BE>()?;
+pub fn parse<R: io::Read>(mut reader: R) -> std::result::Result<ClassFile, ParserError> {
+    let magic= reader.read_u32::<BE>()?;
     if magic != 0xCAFEBABE {
         return Err(ParserError::InvalidMagicHeader);
     }
 
     // TODO: we don't care about minor versions
-    bytes.read_u16::<BE>()?;
+    reader.read_u16::<BE>()?;
 
     // TODO: we should support versions != 61
-    let major = bytes.read_u16::<BE>()?;
+    let major = reader.read_u16::<BE>()?;
     if major != 61 {
         return Err(ParserError::UnsupportedVersion);
     }
